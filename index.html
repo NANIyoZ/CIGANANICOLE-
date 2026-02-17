@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vozes do Destino - Baralho Cigano</title>
     <style>
-        /* ESTILOS GERAIS E INTRO */
+        /* CSS Místico e Efeito Dopamina */
         body {
             margin: 0;
             overflow: hidden;
@@ -25,71 +25,66 @@
             display: flex; justify-content: center; align-items: center;
             background-color: #0d0216;
             z-index: 1000;
-            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
         }
 
         .crystal-ball {
-            width: 250px; height: 250px;
+            width: 220px; height: 220px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #bc98ff, #5a189a);
-            box-shadow: 0 0 60px rgba(188, 152, 255, 0.6), inset -10px -10px 50px rgba(0,0,0,0.5);
+            box-shadow: 0 0 50px rgba(188, 152, 255, 0.5), inset -5px -5px 40px rgba(0,0,0,0.7);
             display: flex; justify-content: center; align-items: center;
-            position: relative;
             animation: pulse 2s infinite alternate;
         }
 
         .tarot-card {
-            width: 80px; height: 130px;
+            width: 70px; height: 110px;
             background: #240b36;
             border: 2px solid #bc98ff;
             border-radius: 5px;
-            position: absolute;
-            transform-style: preserve-3d;
-            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
             display: flex; justify-content: center; align-items: center;
-            font-size: 2em;
+            font-size: 1.8em;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .tarot-card.flip { transform: rotateY(180deg) scale(1.5); }
+        .tarot-card.flip { transform: rotateY(180deg) scale(1.3); }
 
         @keyframes pulse {
-            from { transform: scale(1); box-shadow: 0 0 40px rgba(188, 152, 255, 0.4); }
-            to { transform: scale(1.05); box-shadow: 0 0 80px rgba(188, 152, 255, 0.8); }
+            from { transform: scale(1); }
+            to { transform: scale(1.06); }
         }
 
-        /* FORMULÁRIO PRINCIPAL */
         .container {
             max-width: 400px; width: 90%;
             border: 1px solid #5a189a;
-            padding: 25px; border-radius: 20px;
-            background: rgba(20, 5, 35, 0.95);
-            box-shadow: 0 0 30px rgba(90, 24, 154, 0.5);
-            opacity: 0; transform: scale(0.8);
-            transition: all 1s ease-in-out;
-            pointer-events: none;
+            padding: 30px; border-radius: 25px;
+            background: rgba(20, 5, 35, 0.98);
+            box-shadow: 0 0 40px rgba(90, 24, 154, 0.6);
+            opacity: 0; transform: translateY(30px);
+            transition: all 0.8s ease-out;
         }
 
-        .container.active { opacity: 1; transform: scale(1); pointer-events: auto; }
+        .container.active { opacity: 1; transform: translateY(0); }
 
-        h1 { text-align: center; color: #bc98ff; letter-spacing: 2px; margin: 0; }
-        .subtitle { text-align: center; font-style: italic; color: #9d4edd; font-size: 0.9em; margin-bottom: 20px; }
+        h1 { text-align: center; color: #bc98ff; margin: 0; font-size: 1.8em; }
+        .subtitle { text-align: center; color: #9d4edd; font-style: italic; margin-bottom: 20px; }
         
-        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.85em; }
+        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.8em; }
         input, select, textarea {
             width: 100%; padding: 12px; margin-top: 5px;
             background: #1a0a2e; border: 1px solid #5a189a;
-            color: white; border-radius: 8px; box-sizing: border-box;
-            outline: none;
+            color: white; border-radius: 10px; box-sizing: border-box;
+            outline: none; font-family: sans-serif;
         }
 
         button {
-            width: 100%; padding: 15px; margin-top: 25px;
-            background: linear-gradient(45deg, #5a189a, #7b2cbf);
+            width: 100%; padding: 16px; margin-top: 25px;
+            background: linear-gradient(45deg, #5a189a, #9d4edd);
             border: none; color: white; font-weight: bold;
-            cursor: pointer; border-radius: 8px; transition: 0.3s;
-            text-transform: uppercase;
+            cursor: pointer; border-radius: 10px; transition: 0.3s;
+            text-transform: uppercase; letter-spacing: 1px;
         }
-        button:hover { box-shadow: 0 0 20px #bc98ff; transform: translateY(-2px); }
+        button:hover { box-shadow: 0 0 25px #bc98ff; transform: scale(1.02); }
     </style>
 </head>
 <body>
@@ -102,31 +97,33 @@
 
     <div class="container" id="main-form">
         <h1>Vozes do Destino</h1>
-        <p class="subtitle">Sua jornada espiritual começa aqui</p>
+        <p class="subtitle">A sabedoria cigana guia seus passos</p>
         
         <label>Nome Completo:</label>
-        <input type="text" id="nome" placeholder="Seu nome...">
+        <input type="text" id="nome" placeholder="Digite seu nome...">
 
         <label>Data de Nascimento:</label>
         <input type="date" id="dataNasc">
 
-        <label>Escolha sua Consulta:</label>
+        <label>Serviço Desejado:</label>
         <select id="servico">
             <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
             <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
+            <option value="fazer 10 Perguntas (R$30)">10 Perguntas — R$30</option>
             <option value="uma Amarração Amorosa (R$160)">Amarração Amorosa — R$160</option>
             <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
+            <option value="um Teste de Fidelidade (R$50)">Teste de Fidelidade — R$50</option>
         </select>
 
         <label>Sua Pergunta:</label>
-        <textarea id="pergunta" rows="3" placeholder="O que deseja saber?"></textarea>
+        <textarea id="pergunta" rows="3" placeholder="O que as cartas devem revelar?"></textarea>
 
-        <button onclick="enviarWhatsapp()">🔮 Ver meu Destino</button>
+        <button onclick="enviarWhatsapp()">🔮 Revelar Destino</button>
     </div>
 
     <script>
-        // Lógica da Animação Inicial
-        window.onload = () => {
+        // Animação de Entrada
+        window.addEventListener('load', () => {
             const card = document.getElementById('card');
             const intro = document.getElementById('intro-screen');
             const form = document.getElementById('main-form');
@@ -134,39 +131,44 @@
             setTimeout(() => {
                 card.classList.add('flip');
                 card.innerHTML = "✨";
-            }, 1000);
+            }, 800);
 
             setTimeout(() => {
                 intro.style.opacity = '0';
-                intro.style.transform = 'scale(2)';
-                form.classList.add('active');
-                document.body.style.overflow = 'auto';
-                setTimeout(() => intro.style.display = 'none', 1500);
-            }, 3000);
-        };
+                intro.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    form.classList.add('active');
+                    document.body.style.overflow = 'auto';
+                }, 1200);
+            }, 2500);
+        });
 
-        // Lógica de Envio (CORRIGIDA)
+        // Função de Envio Corrigida para wa.me
         function enviarWhatsapp() {
-            const nome = document.getElementById('nome').value;
+            const nome = document.getElementById('nome').value.trim();
             const dataRaw = document.getElementById('dataNasc').value;
             const servico = document.getElementById('servico').value;
-            const pergunta = document.getElementById('pergunta').value;
+            const pergunta = document.getElementById('pergunta').value.trim();
 
             if(!nome || !pergunta) {
-                alert("Por favor, preencha seu nome e sua pergunta.");
+                alert("Por favor, preencha seu nome e sua pergunta espiritual.");
                 return;
             }
 
-            // Formata a data de AAAA-MM-DD para DD/MM/AAAA
-            const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "Não informada";
-
+            const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "não informada";
             const telefone = "558296173403";
 
-            // Montamos o texto puro primeiro, com quebras de linha reais
-            const textoMensagem = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮\n\nGostaria de *${servico}*.\n\nMinha pergunta para as cartas é:\n"${pergunta}"\n\nAguardo sua luz! 🦋🌙`;
+            // Construção da mensagem limpa
+            const saudacao = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮`;
+            const corpo = `Gostaria de *${servico}*.`;
+            const questao = `Minha pergunta para as cartas é:\n"${pergunta}"`;
+            const fechamento = `Aguardo sua luz! 🦋🌙`;
 
-            // O encodeURIComponent transforma as quebras de linha em códigos que o WhatsApp entende sem mostrar o texto feio
-            const url = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(textoMensagem)}`;
+            const mensagemFinal = `${saudacao}\n\n${corpo}\n\n${questao}\n\n${fechamento}`;
+
+            // wa.me é mais estável para evitar que os códigos apareçam
+            const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagemFinal)}`;
             
             window.open(url, '_blank');
         }
