@@ -5,293 +5,171 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vozes do Destino - Baralho Cigano</title>
     <style>
-        /* Estilos Gerais */
+        /* ESTILOS GERAIS E INTRO */
         body {
             margin: 0;
-            overflow: hidden; /* Esconde barras de rolagem durante a animação */
-            background-color: #0d0216; /* Fundo roxo escuro */
+            overflow: hidden;
+            background-color: #0d0216;
             color: #e0d5e8;
             font-family: 'Georgia', serif;
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            perspective: 1000px; /* Para efeitos 3D */
+            perspective: 1000px;
         }
 
-        /* Estilo da Tela de Introdução (Bola de Cristal e Carta) */
         #intro-screen {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; justify-content: center; align-items: center;
             background-color: #0d0216;
             z-index: 1000;
-            transition: opacity 1s ease-out, transform 1s ease-out; /* Para o fade-out e zoom */
-            transform-origin: center center;
-        }
-
-        .crystal-ball-container {
-            position: relative;
-            width: 300px;
-            height: 300px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            animation: pulse 2s infinite alternate; /* Efeito de pulso na bola */
+            transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
         }
 
         .crystal-ball {
-            width: 100%;
-            height: 100%;
+            width: 250px; height: 250px;
             border-radius: 50%;
-            background: radial-gradient(circle at 70% 30%, #a25be1, #5a189a); /* Efeito de vidro */
-            box-shadow: 0 0 50px rgba(188, 152, 255, 0.7), inset 0 0 30px rgba(255, 255, 255, 0.3);
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            background: radial-gradient(circle at 30% 30%, #bc98ff, #5a189a);
+            box-shadow: 0 0 60px rgba(188, 152, 255, 0.6), inset -10px -10px 50px rgba(0,0,0,0.5);
+            display: flex; justify-content: center; align-items: center;
             position: relative;
-            overflow: hidden;
-        }
-
-        .crystal-ball::before { /* Base da bola */
-            content: '';
-            position: absolute;
-            bottom: -50px;
-            width: 80%;
-            height: 80px;
-            background-color: #3f1a6b;
-            border-radius: 50%;
-            box-shadow: inset 0 -10px 20px rgba(0,0,0,0.5);
+            animation: pulse 2s infinite alternate;
         }
 
         .tarot-card {
+            width: 80px; height: 130px;
+            background: #240b36;
+            border: 2px solid #bc98ff;
+            border-radius: 5px;
             position: absolute;
-            width: 120px;
-            height: 200px;
-            background: linear-gradient(45deg, #a25be1, #5a189a); /* Simula a carta */
-            border-radius: 8px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
             transform-style: preserve-3d;
-            transition: transform 1s ease-in-out;
-            animation: appearCard 1s forwards; /* Animação de aparecer */
-        }
-        
-        .tarot-card.flip {
-            transform: rotateY(180deg); /* Vira a carta */
-        }
-
-        .tarot-card-front, .tarot-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            backface-visibility: hidden; /* Esconde a face de trás ao girar */
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 3em;
-            font-weight: bold;
-            color: #fff;
-            border-radius: 8px;
-        }
-
-        .tarot-card-front {
-            background: linear-gradient(45deg, #a25be1, #5a189a); /* Cor de trás da carta */
-            border: 2px solid #e0d5e8;
-            box-sizing: border-box;
-        }
-        .tarot-card-front::before {
-            content: '🔮'; /* Símbolo místico */
+            transition: transform 1s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex; justify-content: center; align-items: center;
             font-size: 2em;
         }
 
-        .tarot-card-back {
-            background: linear-gradient(45deg, #bc98ff, #7d5ba6); /* Cor da frente da carta */
-            transform: rotateY(180deg); /* Já virada */
-            border: 2px solid #e0d5e8;
-            box-sizing: border-box;
-        }
-        .tarot-card-back::before {
-            content: '✨'; /* Símbolo quando a carta vira */
-            font-size: 2em;
-        }
+        .tarot-card.flip { transform: rotateY(180deg) scale(1.5); }
 
-        /* Animações */
         @keyframes pulse {
-            0% { transform: scale(1); }
-            100% { transform: scale(1.03); }
+            from { transform: scale(1); box-shadow: 0 0 40px rgba(188, 152, 255, 0.4); }
+            to { transform: scale(1.05); box-shadow: 0 0 80px rgba(188, 152, 255, 0.8); }
         }
 
-        @keyframes appearCard {
-            0% { opacity: 0; transform: translateY(50px) scale(0.5); }
-            100% { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* Estilos do Formulário Principal */
+        /* FORMULÁRIO PRINCIPAL */
         .container {
-            max-width: 450px;
-            width: 100%;
+            max-width: 400px; width: 90%;
             border: 1px solid #5a189a;
-            padding: 25px;
-            border-radius: 20px;
-            box-shadow: 0 0 30px rgba(90, 24, 154, 0.5);
+            padding: 25px; border-radius: 20px;
             background: rgba(20, 5, 35, 0.95);
-            z-index: 1;
-            opacity: 0; /* Escondido inicialmente */
-            transform: scale(0.9); /* Para a animação de zoom-in */
-            transition: opacity 1s ease-out, transform 1s ease-out;
-        }
-        .container.active {
-            opacity: 1;
-            transform: scale(1);
+            box-shadow: 0 0 30px rgba(90, 24, 154, 0.5);
+            opacity: 0; transform: scale(0.8);
+            transition: all 1s ease-in-out;
+            pointer-events: none;
         }
 
-        h1 { text-align: center; color: #bc98ff; text-transform: uppercase; letter-spacing: 3px; font-size: 1.6em; }
-        p.subtitle { text-align: center; font-style: italic; color: #9d4edd; margin-bottom: 20px; }
-        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.9em; }
+        .container.active { opacity: 1; transform: scale(1); pointer-events: auto; }
+
+        h1 { text-align: center; color: #bc98ff; letter-spacing: 2px; margin: 0; }
+        .subtitle { text-align: center; font-style: italic; color: #9d4edd; font-size: 0.9em; margin-bottom: 20px; }
+        
+        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.85em; }
         input, select, textarea {
             width: 100%; padding: 12px; margin-top: 5px;
             background: #1a0a2e; border: 1px solid #5a189a;
             color: white; border-radius: 8px; box-sizing: border-box;
-            font-family: sans-serif;
             outline: none;
         }
-        input:focus, select:focus, textarea:focus {
-            border-color: #bc98ff;
-            box-shadow: 0 0 5px #bc98ff;
-        }
+
         button {
-            width: 100%; padding: 15px; margin-top: 30px;
+            width: 100%; padding: 15px; margin-top: 25px;
             background: linear-gradient(45deg, #5a189a, #7b2cbf);
             border: none; color: white; font-weight: bold;
-            cursor: pointer; border-radius: 8px; transition: 0.4s;
-            font-size: 1.1em;
+            cursor: pointer; border-radius: 8px; transition: 0.3s;
             text-transform: uppercase;
         }
-        button:hover { box-shadow: 0 0 20px #bc98ff; transform: scale(1.02); }
-
-        /* Estilos para o grupo de opções no select */
-        optgroup {
-            font-weight: bold;
-            color: #bc98ff;
-            background-color: #1a0a2e;
-        }
-        optgroup option {
-            background-color: #0d0216; /* Fundo das opções */
-            color: #e0d5e8;
-        }
+        button:hover { box-shadow: 0 0 20px #bc98ff; transform: translateY(-2px); }
     </style>
 </head>
 <body>
 
     <div id="intro-screen">
-        <div class="crystal-ball-container">
-            <div class="crystal-ball">
-                <div class="tarot-card" id="tarotCard">
-                    <div class="tarot-card-front"></div>
-                    <div class="tarot-card-back"></div>
-                </div>
-            </div>
+        <div class="crystal-ball">
+            <div class="tarot-card" id="card">🔮</div>
         </div>
     </div>
 
     <div class="container" id="main-form">
         <h1>Vozes do Destino</h1>
-        <p class="subtitle">Desvende os mistérios do seu caminho!</p>
+        <p class="subtitle">Sua jornada espiritual começa aqui</p>
         
-        <label for="nome">Seu Nome Completo:</label>
-        <input type="text" id="nome" placeholder="Ex: Maria Silva...">
+        <label>Nome Completo:</label>
+        <input type="text" id="nome" placeholder="Seu nome...">
 
-        <label for="dataNasc">Data de Nascimento:</label>
+        <label>Data de Nascimento:</label>
         <input type="date" id="dataNasc">
 
-        <label for="servico">O que você busca hoje?</label>
+        <label>Escolha sua Consulta:</label>
         <select id="servico">
-            <optgroup label="Perguntas">
-                <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
-                <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
-                <option value="fazer 10 Perguntas (R$30)">10 Perguntas — R$30</option>
-                <option value="fazer 30 Perguntas (R$40)">30 Perguntas — R$40</option>
-                <option value="fazer 50 Perguntas (R$100)">50 Perguntas — R$100</option>
-            </optgroup>
-            <optgroup label="Simpatias">
-                <option value="uma Simpatia de Amor (R$20)">Simpatia de Amor — R$20</option>
-                <option value="uma Simpatia de Prosperidade (R$35)">Simpatia de Prosperidade — R$35</option>
-                <option value="uma Simpatia de Proteção (R$40)">Simpatia de Proteção — R$40</option>
-                <option value="uma Simpatia de Saúde (R$50)">Simpatia de Saúde — R$50</option>
-                <option value="uma Simpatia de Sorte (R$40)">Simpatia de Sorte — R$40</option>
-                <option value="uma Simpatia de Obsessão Amorosa (R$180)">Simpatia de Obsessão Amorosa — R$180</option>
-                <option value="uma Amarração Amorosa (R$160)">Amarração Amorosa (simples) — R$160</option>
-                <option value="um Adoçamento (R$150)">Adoçamento — R$150</option>
-            </optgroup>
-            <optgroup label="Outros Serviços">
-                <option value="uma Amarração Amorosa POTENCIALIZADA (R$300)">Amarração Amorosa POTENCIALIZADA — R$300</option>
-                <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
-                <option value="um Teste de Fidelidade (R$50)">Teste de Fidelidade — R$50</option>
-            </optgroup>
+            <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
+            <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
+            <option value="uma Amarração Amorosa (R$160)">Amarração Amorosa — R$160</option>
+            <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
         </select>
 
-        <label for="pergunta">Sua Pergunta ou Intenção (opcional para alguns serviços):</label>
-        <textarea id="pergunta" rows="4" placeholder="Abra seu coração para as cartas ou detalhe sua intenção..."></textarea>
+        <label>Sua Pergunta:</label>
+        <textarea id="pergunta" rows="3" placeholder="O que deseja saber?"></textarea>
 
-        <button onclick="enviarWhatsapp()">🔮 Consultar Oráculo</button>
+        <button onclick="enviarWhatsapp()">🔮 Ver meu Destino</button>
     </div>
 
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        const introScreen = document.getElementById('intro-screen');
-        const tarotCard = document.getElementById('tarotCard');
-        const mainForm = document.getElementById('main-form');
+    <script>
+        // Lógica da Animação Inicial
+        window.onload = () => {
+            const card = document.getElementById('card');
+            const intro = document.getElementById('intro-screen');
+            const form = document.getElementById('main-form');
 
-        // 1. Espera a carta aparecer (animação CSS)
-        setTimeout(() => {
-            // 2. Vira a carta
-            tarotCard.classList.add('flip');
-        }, 1500); // 1.5 segundos depois que a tela carrega
+            setTimeout(() => {
+                card.classList.add('flip');
+                card.innerHTML = "✨";
+            }, 1000);
 
-        // 3. Após virar a carta, esconde a intro e revela o formulário com zoom
-        setTimeout(() => {
-            introScreen.style.opacity = '0'; // Começa o fade-out
-            introScreen.style.transform = 'scale(1.2)'; // Começa o zoom-out da intro
+            setTimeout(() => {
+                intro.style.opacity = '0';
+                intro.style.transform = 'scale(2)';
+                form.classList.add('active');
+                document.body.style.overflow = 'auto';
+                setTimeout(() => intro.style.display = 'none', 1500);
+            }, 3000);
+        };
+
+        // Lógica de Envio (CORRIGIDA)
+        function enviarWhatsapp() {
+            const nome = document.getElementById('nome').value;
+            const dataRaw = document.getElementById('dataNasc').value;
+            const servico = document.getElementById('servico').value;
+            const pergunta = document.getElementById('pergunta').value;
+
+            if(!nome || !pergunta) {
+                alert("Por favor, preencha seu nome e sua pergunta.");
+                return;
+            }
+
+            // Formata a data de AAAA-MM-DD para DD/MM/AAAA
+            const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "Não informada";
+
+            const telefone = "558296173403";
+
+            // Montamos o texto puro primeiro, com quebras de linha reais
+            const textoMensagem = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮\n\nGostaria de *${servico}*.\n\nMinha pergunta para as cartas é:\n"${pergunta}"\n\nAguardo sua luz! 🦋🌙`;
+
+            // O encodeURIComponent transforma as quebras de linha em códigos que o WhatsApp entende sem mostrar o texto feio
+            const url = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(textoMensagem)}`;
             
-            // Depois que a transição da intro terminar, esconde e revela o formulário
-            introScreen.addEventListener('transitionend', () => {
-                introScreen.style.display = 'none';
-                mainForm.classList.add('active'); // Revela o formulário com zoom-in
-                document.body.style.overflow = 'auto'; // Habilita scroll novamente
-            }, { once: true }); // Executa o evento apenas uma vez
-            
-        }, 3000); // 3 segundos total (1.5s para aparecer + 1.5s para virar/zoom)
-    });
-
-    function enviarWhatsapp() {
-        const nome = document.getElementById('nome').value;
-        const dataInput = document.getElementById('dataNasc').value;
-        const servico = document.getElementById('servico').value;
-        const pergunta = document.getElementById('pergunta').value;
-        
-        let dataFormatada = "";
-        if(dataInput) {
-            const partes = dataInput.split("-");
-            dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
-        }
-
-        const telefone = "558296173403"; 
-
-        const mensagem = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮%0A%0AGostaria de *${servico}*.%0A%0A Minha pergunta para as cartas é: %0A"${pergunta}"%0A%0AAguardo sua luz! 🦋🌙`;
-
-        const url = `https://api.whatsapp.com/send?phone=${telefone}&text=${encodeURIComponent(mensagem)}`;
-        
-        if(!nome || !servico) { // Nome e serviço são obrigatórios
-            alert("Por favor, preencha seu nome e escolha um serviço.");
-        } else {
             window.open(url, '_blank');
         }
-    }
-</script>
+    </script>
 </body>
 </html>
