@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vozes do Destino - Baralho Cigano</title>
+    <style>
+        body {
+            background-color: #0d0216;
+            color: #e0d5e8;
+            font-family: 'Georgia', serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+        .container {
+            max-width: 450px;
+            width: 100%;
+            border: 1px solid #5a189a;
+            padding: 25px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(90, 24, 154, 0.5);
+            background: rgba(20, 5, 35, 0.95);
+        }
+        h1 { text-align: center; color: #bc98ff; text-transform: uppercase; letter-spacing: 3px; }
+        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; }
+        input, select, textarea {
+            width: 100%; padding: 12px; margin-top: 5px;
+            background: #1a0a2e; border: 1px solid #5a189a;
+            color: white; border-radius: 8px; box-sizing: border-box;
+        }
+        button {
+            width: 100%; padding: 15px; margin-top: 30px;
+            background: linear-gradient(45deg, #5a189a, #7b2cbf);
+            border: none; color: white; font-weight: bold;
+            cursor: pointer; border-radius: 8px; transition: 0.4s;
+        }
+        button:hover { box-shadow: 0 5px 15px #bc98ff; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Tiragem Cigana</h1>
+    <label>Nome Completo:</label>
+    <input type="text" id="nome" placeholder="Digite seu nome...">
+
+    <label>Data de Nascimento:</label>
+    <input type="date" id="dataNasc">
+
+    <label>Escolha o Serviço:</label>
+    <select id="servico">
+        <option value="1 Pergunta (R$8)">1 Pergunta — R$8</option>
+        <option value="8 Perguntas (R$15)">8 Perguntas — R$15</option>
+        <option value="Amarração Amorosa (R$160)">Amarração — R$160</option>
+    </select>
+
+    <label>Sua Pergunta:</label>
+    <textarea id="pergunta" rows="4"></textarea>
+
+    <button onclick="enviarWhatsapp()">Enviar para WhatsApp</button>
+</div>
+
+<script>
+    function enviarWhatsapp() {
+        // CORREÇÃO: Adicionado .value para pegar o texto real
+        const nome = document.getElementById('nome').value;
+        const data = document.getElementById('dataNasc').value;
+        const servico = document.getElementById('servico').value;
+        const pergunta = document.getElementById('pergunta').value;
+        
+        // CORREÇÃO: Número com DDI 55
+        const telefone = "558296173403"; 
+
+        const mensagem = `✨ *Nova Consulta* ✨%0A%0A` +
+            `*Serviço:* ${servico}%0A` +
+            `*Nome:* ${nome}%0A` +
+            `*Data:* ${data}%0A%0A` +
+            `*Pergunta:* ${pergunta}`;
+
+        // CORREÇÃO: Link oficial para evitar erros de esquema
+        const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+        
+        window.open(url, '_blank');
+    }
+</script>
+</body>
+</html>
