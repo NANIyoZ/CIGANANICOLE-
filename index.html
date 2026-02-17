@@ -14,6 +14,7 @@
             align-items: center;
             padding: 20px;
             margin: 0;
+            min-height: 100vh;
         }
         .container {
             max-width: 450px;
@@ -24,66 +25,78 @@
             box-shadow: 0 0 30px rgba(90, 24, 154, 0.5);
             background: rgba(20, 5, 35, 0.95);
         }
-        h1 { text-align: center; color: #bc98ff; text-transform: uppercase; letter-spacing: 3px; }
-        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; }
+        h1 { text-align: center; color: #bc98ff; text-transform: uppercase; letter-spacing: 3px; font-size: 1.6em; }
+        p.subtitle { text-align: center; font-style: italic; color: #9d4edd; margin-bottom: 20px; }
+        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.9em; }
         input, select, textarea {
             width: 100%; padding: 12px; margin-top: 5px;
             background: #1a0a2e; border: 1px solid #5a189a;
             color: white; border-radius: 8px; box-sizing: border-box;
+            font-family: sans-serif;
         }
         button {
             width: 100%; padding: 15px; margin-top: 30px;
             background: linear-gradient(45deg, #5a189a, #7b2cbf);
             border: none; color: white; font-weight: bold;
             cursor: pointer; border-radius: 8px; transition: 0.4s;
+            font-size: 1.1em;
+            text-transform: uppercase;
         }
-        button:hover { box-shadow: 0 5px 15px #bc98ff; }
+        button:hover { box-shadow: 0 0 20px #bc98ff; transform: scale(1.02); }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>Tiragem Cigana</h1>
-    <label>Nome Completo:</label>
-    <input type="text" id="nome" placeholder="Digite seu nome...">
+    <h1>Vozes do Destino</h1>
+    <p class="subtitle">Revele o que o futuro reserva para você...</p>
+    
+    <label>Seu Nome Completo:</label>
+    <input type="text" id="nome" placeholder="Ex: Maria Silva...">
 
     <label>Data de Nascimento:</label>
     <input type="date" id="dataNasc">
 
-    <label>Escolha o Serviço:</label>
+    <label>O que você busca hoje?</label>
     <select id="servico">
-        <option value="1 Pergunta (R$8)">1 Pergunta — R$8</option>
-        <option value="8 Perguntas (R$15)">8 Perguntas — R$15</option>
-        <option value="Amarração Amorosa (R$160)">Amarração — R$160</option>
+        <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
+        <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
+        <option value="uma Amarração Amorosa (R$160)">Amarração Amorosa — R$160</option>
+        <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
     </select>
 
-    <label>Sua Pergunta:</label>
-    <textarea id="pergunta" rows="4"></textarea>
+    <label>Sua Pergunta ou Intenção:</label>
+    <textarea id="pergunta" rows="4" placeholder="Abra seu coração para as cartas..."></textarea>
 
-    <button onclick="enviarWhatsapp()">Enviar para WhatsApp</button>
+    <button onclick="enviarWhatsapp()">🔮 Consultar Oráculo</button>
 </div>
 
 <script>
     function enviarWhatsapp() {
-        // CORREÇÃO: Adicionado .value para pegar o texto real
         const nome = document.getElementById('nome').value;
-        const data = document.getElementById('dataNasc').value;
+        const dataInput = document.getElementById('dataNasc').value;
         const servico = document.getElementById('servico').value;
         const pergunta = document.getElementById('pergunta').value;
         
-        // CORREÇÃO: Número com DDI 55
+        // Formatar data para PT-BR (DD/MM/AAAA)
+        let dataFormatada = "";
+        if(dataInput) {
+            const partes = dataInput.split("-");
+            dataFormatada = `${partes[2]}/${partes[1]}/${partes[0]}`;
+        }
+
         const telefone = "558296173403"; 
 
-        const mensagem = `✨ *Nova Consulta* ✨%0A%0A` +
-            `*Serviço:* ${servico}%0A` +
-            `*Nome:* ${nome}%0A` +
-            `*Data:* ${data}%0A%0A` +
-            `*Pergunta:* ${pergunta}`;
+        // Mensagem mais humana e "bonitinha"
+        const mensagem = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮%0A%0AGostaria de *${servico}*.%0A%0A Minha pergunta para as cartas é: %0A"${pergunta}"%0A%0AAguardo sua luz! 🦋🌙`;
 
-        // CORREÇÃO: Link oficial para evitar erros de esquema
-        const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagem)}`;
+        const url = `https://api.whatsapp.com/send?phone=${telefone}&text=${mensagem}`;
         
-        window.open(url, '_blank');
+        if(!nome || !pergunta) {
+            alert("Por favor, preencha seu nome e sua pergunta.");
+        } else {
+            window.open(url, '_blank');
+        }
     }
 </script>
 </body>
