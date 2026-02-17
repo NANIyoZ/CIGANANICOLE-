@@ -125,22 +125,22 @@
 
         <label>Escolha o Serviço:</label>
         <select id="servico">
-            <optgroup label="--- PERGUNTAS ---">
+            <optgroup label="--- PERGUNTAS ---" data-tipo="pergunta">
                 <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
                 <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
                 <option value="fazer 10 Perguntas (R$30)">10 Perguntas — R$30</option>
                 <option value="fazer 20 Perguntas (R$40)">20 Perguntas — R$40</option>
                 <option value="fazer 50 Perguntas (R$100)">50 Perguntas — R$100</option>
             </optgroup>
-            <optgroup label="--- SIMPATIAS ---">
-                <option value="uma Simpatia de Amor (R$20)">Simpatia de Amor — R$20</option>
+            <optgroup label="--- SIMPATIAS ---" data-tipo="simpatia">
+                <option value="uma Simpatia de Amor (R$50)">Simpatia de Amor — R$50</option>
                 <option value="uma Simpatia de Prosperidade (R$35)">Simpatia de Prosperidade — R$35</option>
                 <option value="uma Simpatia de Proteção (R$40)">Simpatia de Proteção — R$40</option>
                 <option value="uma Simpatia de Saúde (R$50)">Simpatia de Saúde — R$50</option>
                 <option value="uma Simpatia de Sorte (R$40)">Simpatia de Sorte — R$40</option>
                 <option value="uma Simpatia de Obsessão Amorosa (R$180)">Obsessão Amorosa — R$180</option>
             </optgroup>
-            <optgroup label="--- TRABALHOS & ESPECIAIS ---">
+            <optgroup label="--- TRABALHOS & ESPECIAIS ---" data-tipo="trabalho">
                 <option value="um Adoçamento (R$150)">Adoçamento — R$150</option>
                 <option value="uma Amarração Amorosa Simples (R$160)">Amarração Amorosa — R$160</option>
                 <option value="uma Amarração Amorosa POTENCIALIZADA (R$300)">Amarração POTENCIALIZADA — R$300</option>
@@ -151,7 +151,7 @@
             </optgroup>
         </select>
 
-        <label>Sua Pergunta ou Intenção:</label>
+        <label id="labelPergunta">Sua Pergunta ou Intenção:</label>
         <textarea id="pergunta" rows="3" placeholder="O que você deseja que as cartas revelem?"></textarea>
 
         <button id="btnEnviar">🔮 Revelar Destino</button>
@@ -164,10 +164,8 @@
             const intro = document.getElementById('intro-screen');
             const form = document.getElementById('main-form');
 
-            // 1. Vira a carta
             setTimeout(() => { card.classList.add('flip'); card.innerHTML = "✨"; }, 800);
             
-            // 2. Faz o zoom na bola e revela o form
             setTimeout(() => {
                 intro.style.opacity = '0';
                 intro.style.transform = 'scale(1.5)';
@@ -179,25 +177,64 @@
             }, 2500);
         });
 
-        // Função de Envio Corrigida
+        // Função de Envio Dinâmica
         document.getElementById('btnEnviar').addEventListener('click', function() {
             const nome = document.getElementById('nome').value.trim();
             const dataRaw = document.getElementById('dataNasc').value;
-            const servico = document.getElementById('servico').value;
+            const selectServico = document.getElementById('servico');
+            const servicoTexto = selectServico.value;
             const pergunta = document.getElementById('pergunta').value.trim();
 
+            // Identificar o tipo de serviço através do grupo (optgroup)
+            const optgroup = selectServico.options[selectServico.selectedIndex].parentNode;
+            const tipoServico = optgroup.getAttribute('data-tipo');
+
             if(!nome || !pergunta) {
-                alert("Por favor, preencha seu nome e sua pergunta.");
+                alert("Por favor, preencha seu nome e detalhe seu pedido/pergunta.");
                 return;
             }
 
             const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "não informada";
             const telefone = "558296173403";
 
-            const msg = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮\n\nGostaria de *${servico}*.\n\nMinha pergunta para as cartas é:\n"${pergunta}"\n\nAguardo sua luz! 🦋🌙`;
+            // Lógica de Texto Dinâmico baseada no tipo de pedido
+            let introducaoPedido = "";
+            let detalhePedido = "";
+
+            if (tipoServico === "pergunta") {
+                introducaoPedido = "sinto que preciso de uma orientação espiritual através das cartas. 🔮";
+                detalhePedido = `Minha pergunta para o oráculo é:\n"${pergunta}"`;
+            } else if (tipoServico === "simpatia") {
+                introducaoPedido = "gostaria de realizar uma simpatia para mudar minhas energias. ✨";
+                detalhePedido = `Minha intenção e detalhes para a simpatia são:\n"${pergunta}"`;
+            } else { // trabalho
+                introducaoPedido = "busco realizar um trabalho espiritual específico para o meu caso. 🔥";
+                detalhePedido = `Os detalhes do meu caso e minha intenção são:\n"${pergunta}"`;
+            }
+
+            const msg = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e ${introducaoPedido}\n\nGostaria de *${servicoTexto}*.\n\n${detalhePedido}\n\nAguardo sua luz e orientações! 🦋🌙`;
 
             const link = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(msg);
             window.location.href = link;
+        });
+
+        // Mudar placeholder dinamicamente para ajudar o usuário
+        document.getElementById('servico').addEventListener('change', function() {
+            const optgroup = this.options[this.selectedIndex].parentNode;
+            const tipo = optgroup.getAttribute('data-tipo');
+            const areaTexto = document.getElementById('pergunta');
+            const label = document.getElementById('labelPergunta');
+
+            if (tipo === "pergunta") {
+                label.innerText = "Sua Pergunta para as Cartas:";
+                areaTexto.placeholder = "Ex: O que o futuro reserva para minha vida amorosa?";
+            } else if (tipo === "simpatia") {
+                label.innerText = "Sua Intenção para a Simpatia:";
+                areaTexto.placeholder = "Ex: Gostaria de atrair mais prosperidade para minha casa...";
+            } else {
+                label.innerText = "Detalhes do seu Caso:";
+                areaTexto.placeholder = "Conte brevemente sua situação para o trabalho espiritual...";
+            }
         });
     </script>
 </body>
