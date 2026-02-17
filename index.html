@@ -211,6 +211,109 @@
     </script>
 </body>
 </html>
+box-shadow: 0 0 20px #bc98ff;
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar bonitinha para o formulário */
+        .container::-webkit-scrollbar { width: 5px; }
+        .container::-webkit-scrollbar-thumb { background: #5a189a; border-radius: 10px; }
+    </style>
+</head>
+<body>
+
+    <div id="intro-screen">
+        <div class="crystal-ball">
+            <div class="tarot-card" id="card">🔮</div>
+        </div>
+    </div>
+
+    <div class="container" id="main-form">
+        <h1>Vozes do Destino</h1>
+        <p class="subtitle">Desvende os mistérios com o Baralho Cigano</p>
+        
+        <label>Nome Completo:</label>
+        <input type="text" id="nome" placeholder="Seu nome místico...">
+
+        <label>Data de Nascimento:</label>
+        <input type="date" id="dataNasc">
+
+        <label>Escolha o Serviço:</label>
+        <select id="servico">
+            <optgroup label="--- PERGUNTAS ---">
+                <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
+                <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
+                <option value="fazer 10 Perguntas (R$30)">10 Perguntas — R$30</option>
+                <option value="fazer 30 Perguntas (R$40)">30 Perguntas — R$40</option>
+                <option value="fazer 50 Perguntas (R$100)">50 Perguntas — R$100</option>
+            </optgroup>
+            <optgroup label="--- SIMPATIAS ---">
+                <option value="uma Simpatia de Amor (R$20)">Simpatia de Amor — R$20</option>
+                <option value="uma Simpatia de Prosperidade (R$35)">Simpatia de Prosperidade — R$35</option>
+                <option value="uma Simpatia de Proteção (R$40)">Simpatia de Proteção — R$40</option>
+                <option value="uma Simpatia de Saúde (R$50)">Simpatia de Saúde — R$50</option>
+                <option value="uma Simpatia de Sorte (R$40)">Simpatia de Sorte — R$40</option>
+                <option value="uma Simpatia de Obsessão Amorosa (R$180)">Obsessão Amorosa — R$180</option>
+            </optgroup>
+            <optgroup label="--- TRABALHOS & ESPECIAIS ---">
+                <option value="um Adoçamento (R$150)">Adoçamento — R$150</option>
+                <option value="uma Amarração Amorosa Simples (R$160)">Amarração Amorosa — R$160</option>
+                <option value="uma Amarração Amorosa POTENCIALIZADA (R$300)">Amarração POTENCIALIZADA — R$300</option>
+                <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
+                <option value="um Teste de Fidelidade (R$50)">Teste de Fidelidade — R$50</option>
+            </optgroup>
+        </select>
+
+        <label>Sua Pergunta ou Intenção:</label>
+        <textarea id="pergunta" rows="3" placeholder="O que você deseja que as cartas revelem?"></textarea>
+
+        <button id="btnEnviar">🔮 Consultar Oráculo</button>
+    </div>
+
+    <script>
+        // Lógica de Animação de Entrada
+        window.addEventListener('load', () => {
+            const card = document.getElementById('card');
+            const intro = document.getElementById('intro-screen');
+            const form = document.getElementById('main-form');
+
+            setTimeout(() => { card.classList.add('flip'); card.innerHTML = "✨"; }, 800);
+            setTimeout(() => {
+                intro.style.opacity = '0';
+                intro.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    form.classList.add('active');
+                    document.body.style.overflow = 'auto';
+                }, 1000);
+            }, 2500);
+        });
+
+        // Lógica de Envio Limpa e Profissional
+        document.getElementById('btnEnviar').addEventListener('click', function() {
+            const nome = document.getElementById('nome').value.trim();
+            const dataRaw = document.getElementById('dataNasc').value;
+            const servico = document.getElementById('servico').value;
+            const pergunta = document.getElementById('pergunta').value.trim();
+
+            if(!nome || !pergunta) {
+                alert("Por favor, preencha seu nome e sua pergunta espiritual.");
+                return;
+            }
+
+            const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "Não informada";
+            const telefone = "558296173403";
+
+            // Montagem da mensagem formatada para o App do WhatsApp
+            const msg = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮\n\nGostaria de *${servico}*.\n\nMinha pergunta para as cartas é:\n"${pergunta}"\n\nAguardo sua luz! 🦋🌙`;
+
+            const link = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(msg);
+            
+            window.location.href = link;
+        });
+    </script>
+</body>
+</html>
 
         <button id="btnEnviar">🔮 Revelar Destino</button>
     </div>
