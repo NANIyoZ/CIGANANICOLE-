@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vozes do Destino - Baralho Cigano</title>
     <style>
-        /* CSS Místico e Efeito Dopamina */
         body {
             margin: 0;
             overflow: hidden;
@@ -16,7 +15,6 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
-            perspective: 1000px;
         }
 
         #intro-screen {
@@ -25,14 +23,14 @@
             display: flex; justify-content: center; align-items: center;
             background-color: #0d0216;
             z-index: 1000;
-            transition: opacity 1.2s ease-in-out, transform 1.2s ease-in-out;
+            transition: all 1.2s ease-in-out;
         }
 
         .crystal-ball {
             width: 220px; height: 220px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #bc98ff, #5a189a);
-            box-shadow: 0 0 50px rgba(188, 152, 255, 0.5), inset -5px -5px 40px rgba(0,0,0,0.7);
+            box-shadow: 0 0 50px rgba(188, 152, 255, 0.4), inset -5px -5px 40px rgba(0,0,0,0.7);
             display: flex; justify-content: center; align-items: center;
             animation: pulse 2s infinite alternate;
         }
@@ -44,15 +42,12 @@
             border-radius: 5px;
             display: flex; justify-content: center; align-items: center;
             font-size: 1.8em;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: transform 0.8s;
         }
 
         .tarot-card.flip { transform: rotateY(180deg) scale(1.3); }
 
-        @keyframes pulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.06); }
-        }
+        @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
         .container {
             max-width: 400px; width: 90%;
@@ -60,31 +55,29 @@
             padding: 30px; border-radius: 25px;
             background: rgba(20, 5, 35, 0.98);
             box-shadow: 0 0 40px rgba(90, 24, 154, 0.6);
-            opacity: 0; transform: translateY(30px);
+            opacity: 0;
             transition: all 0.8s ease-out;
         }
 
-        .container.active { opacity: 1; transform: translateY(0); }
+        .container.active { opacity: 1; }
 
-        h1 { text-align: center; color: #bc98ff; margin: 0; font-size: 1.8em; }
-        .subtitle { text-align: center; color: #9d4edd; font-style: italic; margin-bottom: 20px; }
+        h1 { text-align: center; color: #bc98ff; margin: 0; }
+        .subtitle { text-align: center; color: #9d4edd; font-style: italic; margin-bottom: 20px; font-size: 0.9em;}
         
         label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.8em; }
         input, select, textarea {
             width: 100%; padding: 12px; margin-top: 5px;
             background: #1a0a2e; border: 1px solid #5a189a;
             color: white; border-radius: 10px; box-sizing: border-box;
-            outline: none; font-family: sans-serif;
+            outline: none;
         }
 
         button {
             width: 100%; padding: 16px; margin-top: 25px;
             background: linear-gradient(45deg, #5a189a, #9d4edd);
             border: none; color: white; font-weight: bold;
-            cursor: pointer; border-radius: 10px; transition: 0.3s;
-            text-transform: uppercase; letter-spacing: 1px;
+            cursor: pointer; border-radius: 10px; text-transform: uppercase;
         }
-        button:hover { box-shadow: 0 0 25px #bc98ff; transform: scale(1.02); }
     </style>
 </head>
 <body>
@@ -97,45 +90,38 @@
 
     <div class="container" id="main-form">
         <h1>Vozes do Destino</h1>
-        <p class="subtitle">A sabedoria cigana guia seus passos</p>
+        <p class="subtitle">O oráculo cigano aguarda por ti</p>
         
         <label>Nome Completo:</label>
-        <input type="text" id="nome" placeholder="Digite seu nome...">
+        <input type="text" id="nome" placeholder="Teu nome...">
 
         <label>Data de Nascimento:</label>
         <input type="date" id="dataNasc">
 
-        <label>Serviço Desejado:</label>
+        <label>Consulta:</label>
         <select id="servico">
             <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
             <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
-            <option value="fazer 10 Perguntas (R$30)">10 Perguntas — R$30</option>
-            <option value="uma Amarração Amorosa (R$160)">Amarração Amorosa — R$160</option>
+            <option value="uma Amarração (R$160)">Amarração Amorosa — R$160</option>
             <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
-            <option value="um Teste de Fidelidade (R$50)">Teste de Fidelidade — R$50</option>
         </select>
 
-        <label>Sua Pergunta:</label>
-        <textarea id="pergunta" rows="3" placeholder="O que as cartas devem revelar?"></textarea>
+        <label>Tua Pergunta:</label>
+        <textarea id="pergunta" rows="3" placeholder="O que queres saber?"></textarea>
 
-        <button onclick="enviarWhatsapp()">🔮 Revelar Destino</button>
+        <button id="btnEnviar">🔮 Revelar Destino</button>
     </div>
 
     <script>
-        // Animação de Entrada
+        // Animação inicial
         window.addEventListener('load', () => {
             const card = document.getElementById('card');
             const intro = document.getElementById('intro-screen');
             const form = document.getElementById('main-form');
 
-            setTimeout(() => {
-                card.classList.add('flip');
-                card.innerHTML = "✨";
-            }, 800);
-
+            setTimeout(() => { card.classList.add('flip'); card.innerHTML = "✨"; }, 800);
             setTimeout(() => {
                 intro.style.opacity = '0';
-                intro.style.transform = 'scale(1.5)';
                 setTimeout(() => {
                     intro.style.display = 'none';
                     form.classList.add('active');
@@ -144,34 +130,30 @@
             }, 2500);
         });
 
-        // Função de Envio Corrigida para wa.me
-        function enviarWhatsapp() {
-            const nome = document.getElementById('nome').value.trim();
+        // FUNÇÃO DE ENVIO REFEITA PARA EVITAR TEXTO BRUTO
+        document.getElementById('btnEnviar').addEventListener('click', function() {
+            const nome = document.getElementById('nome').value;
             const dataRaw = document.getElementById('dataNasc').value;
             const servico = document.getElementById('servico').value;
-            const pergunta = document.getElementById('pergunta').value.trim();
+            const pergunta = document.getElementById('pergunta').value;
 
             if(!nome || !pergunta) {
-                alert("Por favor, preencha seu nome e sua pergunta espiritual.");
+                alert("Por favor, preenche o nome e a pergunta.");
                 return;
             }
 
             const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "não informada";
             const telefone = "558296173403";
 
-            // Construção da mensagem limpa
-            const saudacao = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮`;
-            const corpo = `Gostaria de *${servico}*.`;
-            const questao = `Minha pergunta para as cartas é:\n"${pergunta}"`;
-            const fechamento = `Aguardo sua luz! 🦋🌙`;
+            // Montamos a mensagem usando Template Strings
+            const msg = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮\n\nGostaria de *${servico}*.\n\nMinha pergunta para as cartas é:\n"${pergunta}"\n\nAguardo sua luz! 🦋🌙`;
 
-            const mensagemFinal = `${saudacao}\n\n${corpo}\n\n${questao}\n\n${fechamento}`;
-
-            // wa.me é mais estável para evitar que os códigos apareçam
-            const url = `https://wa.me/${telefone}?text=${encodeURIComponent(mensagemFinal)}`;
+            // Criamos o link codificado corretamente
+            const link = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(msg);
             
-            window.open(url, '_blank');
-        }
+            // Forçamos a abertura
+            window.location.href = link;
+        });
     </script>
 </body>
 </html>
