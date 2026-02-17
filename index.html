@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Vozes do Destino - Baralho Cigano</title>
     <style>
+        /* BASE E ANIMAÇÕES */
         body {
             margin: 0;
             overflow: hidden;
@@ -15,6 +16,7 @@
             justify-content: center;
             align-items: center;
             min-height: 100vh;
+            perspective: 1000px;
         }
 
         #intro-screen {
@@ -27,7 +29,7 @@
         }
 
         .crystal-ball {
-            width: 220px; height: 220px;
+            width: 200px; height: 200px;
             border-radius: 50%;
             background: radial-gradient(circle at 30% 30%, #bc98ff, #5a189a);
             box-shadow: 0 0 50px rgba(188, 152, 255, 0.4), inset -5px -5px 40px rgba(0,0,0,0.7);
@@ -36,48 +38,83 @@
         }
 
         .tarot-card {
-            width: 70px; height: 110px;
+            width: 60px; height: 100px;
             background: #240b36;
             border: 2px solid #bc98ff;
             border-radius: 5px;
             display: flex; justify-content: center; align-items: center;
-            font-size: 1.8em;
+            font-size: 1.5em;
             transition: transform 0.8s;
         }
 
         .tarot-card.flip { transform: rotateY(180deg) scale(1.3); }
-
         @keyframes pulse { from { transform: scale(1); } to { transform: scale(1.05); } }
 
+        /* CONTAINER DO FORMULÁRIO */
         .container {
-            max-width: 400px; width: 90%;
+            max-width: 420px; width: 90%;
             border: 1px solid #5a189a;
-            padding: 30px; border-radius: 25px;
+            padding: 25px; border-radius: 25px;
             background: rgba(20, 5, 35, 0.98);
             box-shadow: 0 0 40px rgba(90, 24, 154, 0.6);
             opacity: 0;
             transition: all 0.8s ease-out;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         .container.active { opacity: 1; }
 
-        h1 { text-align: center; color: #bc98ff; margin: 0; }
-        .subtitle { text-align: center; color: #9d4edd; font-style: italic; margin-bottom: 20px; font-size: 0.9em;}
+        h1 { text-align: center; color: #bc98ff; margin: 0; font-size: 1.6em; text-transform: uppercase; letter-spacing: 2px;}
+        .subtitle { text-align: center; color: #9d4edd; font-style: italic; margin-bottom: 15px; font-size: 0.85em;}
         
-        label { display: block; margin-top: 15px; color: #bc98ff; font-weight: bold; font-size: 0.8em; }
+        label { display: block; margin-top: 12px; color: #bc98ff; font-weight: bold; font-size: 0.8em; }
+
+        /* ESTILIZAÇÃO DO SELECT E INPUTS */
         input, select, textarea {
             width: 100%; padding: 12px; margin-top: 5px;
             background: #1a0a2e; border: 1px solid #5a189a;
-            color: white; border-radius: 10px; box-sizing: border-box;
-            outline: none;
+            color: white; border-radius: 12px; box-sizing: border-box;
+            outline: none; transition: 0.3s;
+            font-family: 'Arial', sans-serif;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: #bc98ff;
+            box-shadow: 0 0 12px rgba(188, 152, 255, 0.5);
+            background: #240b36;
+        }
+
+        /* Estilo para as categorias dentro do select */
+        optgroup {
+            background-color: #1a0a2e;
+            color: #bc98ff;
+            font-style: normal;
+            font-weight: bold;
+        }
+
+        option {
+            background-color: #0d0216;
+            color: #e0d5e8;
+            padding: 10px;
         }
 
         button {
-            width: 100%; padding: 16px; margin-top: 25px;
+            width: 100%; padding: 16px; margin-top: 20px;
             background: linear-gradient(45deg, #5a189a, #9d4edd);
             border: none; color: white; font-weight: bold;
-            cursor: pointer; border-radius: 10px; text-transform: uppercase;
+            cursor: pointer; border-radius: 12px; text-transform: uppercase;
+            letter-spacing: 1px; transition: 0.3s;
         }
+
+        button:hover {
+            box-shadow: 0 0 20px #bc98ff;
+            transform: translateY(-2px);
+        }
+
+        /* Scrollbar bonitinha para o formulário */
+        .container::-webkit-scrollbar { width: 5px; }
+        .container::-webkit-scrollbar-thumb { background: #5a189a; border-radius: 10px; }
     </style>
 </head>
 <body>
@@ -90,24 +127,90 @@
 
     <div class="container" id="main-form">
         <h1>Vozes do Destino</h1>
-        <p class="subtitle">O oráculo cigano aguarda por ti</p>
+        <p class="subtitle">Desvende os mistérios com o Baralho Cigano</p>
         
         <label>Nome Completo:</label>
-        <input type="text" id="nome" placeholder="Teu nome...">
+        <input type="text" id="nome" placeholder="Seu nome místico...">
 
         <label>Data de Nascimento:</label>
         <input type="date" id="dataNasc">
 
-        <label>Consulta:</label>
+        <label>Escolha o Serviço:</label>
         <select id="servico">
-            <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
-            <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
-            <option value="uma Amarração (R$160)">Amarração Amorosa — R$160</option>
-            <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
+            <optgroup label="--- PERGUNTAS ---">
+                <option value="fazer 1 Pergunta (R$8)">1 Pergunta — R$8</option>
+                <option value="fazer 8 Perguntas (R$15)">8 Perguntas — R$15</option>
+                <option value="fazer 10 Perguntas (R$30)">10 Perguntas — R$30</option>
+                <option value="fazer 30 Perguntas (R$40)">30 Perguntas — R$40</option>
+                <option value="fazer 50 Perguntas (R$100)">50 Perguntas — R$100</option>
+            </optgroup>
+            <optgroup label="--- SIMPATIAS ---">
+                <option value="uma Simpatia de Amor (R$20)">Simpatia de Amor — R$20</option>
+                <option value="uma Simpatia de Prosperidade (R$35)">Simpatia de Prosperidade — R$35</option>
+                <option value="uma Simpatia de Proteção (R$40)">Simpatia de Proteção — R$40</option>
+                <option value="uma Simpatia de Saúde (R$50)">Simpatia de Saúde — R$50</option>
+                <option value="uma Simpatia de Sorte (R$40)">Simpatia de Sorte — R$40</option>
+                <option value="uma Simpatia de Obsessão Amorosa (R$180)">Obsessão Amorosa — R$180</option>
+            </optgroup>
+            <optgroup label="--- TRABALHOS & ESPECIAIS ---">
+                <option value="um Adoçamento (R$150)">Adoçamento — R$150</option>
+                <option value="uma Amarração Amorosa Simples (R$160)">Amarração Amorosa — R$160</option>
+                <option value="uma Amarração Amorosa POTENCIALIZADA (R$300)">Amarração POTENCIALIZADA — R$300</option>
+                <option value="uma Carta Canalizada (R$40)">Carta Canalizada — R$40</option>
+                <option value="um Teste de Fidelidade (R$50)">Teste de Fidelidade — R$50</option>
+            </optgroup>
         </select>
 
-        <label>Tua Pergunta:</label>
-        <textarea id="pergunta" rows="3" placeholder="O que queres saber?"></textarea>
+        <label>Sua Pergunta ou Intenção:</label>
+        <textarea id="pergunta" rows="3" placeholder="O que você deseja que as cartas revelem?"></textarea>
+
+        <button id="btnEnviar">🔮 Consultar Oráculo</button>
+    </div>
+
+    <script>
+        // Lógica de Animação de Entrada
+        window.addEventListener('load', () => {
+            const card = document.getElementById('card');
+            const intro = document.getElementById('intro-screen');
+            const form = document.getElementById('main-form');
+
+            setTimeout(() => { card.classList.add('flip'); card.innerHTML = "✨"; }, 800);
+            setTimeout(() => {
+                intro.style.opacity = '0';
+                intro.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    intro.style.display = 'none';
+                    form.classList.add('active');
+                    document.body.style.overflow = 'auto';
+                }, 1000);
+            }, 2500);
+        });
+
+        // Lógica de Envio Limpa e Profissional
+        document.getElementById('btnEnviar').addEventListener('click', function() {
+            const nome = document.getElementById('nome').value.trim();
+            const dataRaw = document.getElementById('dataNasc').value;
+            const servico = document.getElementById('servico').value;
+            const pergunta = document.getElementById('pergunta').value.trim();
+
+            if(!nome || !pergunta) {
+                alert("Por favor, preencha seu nome e sua pergunta espiritual.");
+                return;
+            }
+
+            const dataFormatada = dataRaw ? dataRaw.split('-').reverse().join('/') : "Não informada";
+            const telefone = "558296173403";
+
+            // Montagem da mensagem formatada para o App do WhatsApp
+            const msg = `Olá! ✨ Me chamo *${nome}* (nascido(a) em ${dataFormatada}) e sinto que preciso de uma orientação espiritual. 🔮\n\nGostaria de *${servico}*.\n\nMinha pergunta para as cartas é:\n"${pergunta}"\n\nAguardo sua luz! 🦋🌙`;
+
+            const link = "https://wa.me/" + telefone + "?text=" + encodeURIComponent(msg);
+            
+            window.location.href = link;
+        });
+    </script>
+</body>
+</html>
 
         <button id="btnEnviar">🔮 Revelar Destino</button>
     </div>
